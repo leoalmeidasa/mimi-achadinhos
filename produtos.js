@@ -7,6 +7,15 @@ window.VITRINE = {
   descricao: 'Os achados que aparecem nos meus vídeos 👇',
   produtos: [
     {
+      id: 'arvore-210',
+      titulo: 'Árvore de Natal artificial 2,10 m, galhos grandes, pé de ferro (enfeites não inclusos)',
+      preco: '',
+      imagem: 'img/arvore-210.jpg',
+      link: 'https://s.shopee.com.br/1gKEoeIeol',
+      categoria: 'Natal',
+      novo: true,
+    },
+    {
       id: 'capas-cadeira',
       titulo: 'Kit 4 capas de cadeira natalinas, tecido elástico, várias estampas',
       preco: '',
