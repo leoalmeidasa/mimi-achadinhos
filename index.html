@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mimi Achadinhos</title>
+<meta name="description" content="Os produtos que aparecem nos meus vídeos, com link direto para a Shopee.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎄</text></svg>">
+<style>
+  :root {
+    --bg: #1f1b24;
+    --card: #2b2532;
+    --card-hover: #342d3d;
+    --text: #ece6f0;
+    --muted: #b3a9bd;
+    --accent: #ee6a3c;      /* laranja próximo ao da Shopee, sem saturação máxima */
+    --accent-text: #fff6f0;
+    --chip: #3a3244;
+    --chip-on: #ee6a3c;
+    --radius: 16px;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f6f1ea;
+      --card: #fffaf4;
+      --card-hover: #fdf1e6;
+      --text: #2d2630;
+      --muted: #6f6575;
+      --chip: #ece3d8;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.4;
+  }
+  main { max-width: 520px; margin: 0 auto; padding: 28px 16px 40px; }
+  header { text-align: center; margin-bottom: 20px; }
+  .avatar {
+    width: 84px; height: 84px; border-radius: 50%; margin: 0 auto 10px;
+    display: block; object-fit: cover;
+    background: linear-gradient(135deg, #ee6a3c, #c94f7c);
+  }
+  h1 { font-size: 1.35rem; margin: 0 0 4px; }
+  header p { margin: 0; color: var(--muted); }
+  .busca {
+    width: 100%; margin: 18px 0 12px; padding: 12px 14px; font-size: 1rem;
+    border-radius: 12px; border: 1px solid var(--chip); background: var(--card); color: var(--text);
+  }
+  .chips { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 14px; }
+  .chip {
+    flex: none; border: 0; border-radius: 999px; padding: 7px 14px; font-size: .9rem;
+    background: var(--chip); color: var(--text); cursor: pointer;
+  }
+  .chip[aria-pressed="true"] { background: var(--chip-on); color: var(--accent-text); }
+  .lista { display: grid; gap: 12px; }
+  .produto {
+    display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: center;
+    background: var(--card); border-radius: var(--radius); padding: 10px;
+    text-decoration: none; color: inherit; transition: background .15s;
+    position: relative;
+  }
+  .produto:hover, .produto:focus-visible { background: var(--card-hover); }
+  .produto img { width: 96px; height: 96px; object-fit: cover; border-radius: 12px; display: block; }
+  .produto h2 { font-size: .98rem; font-weight: 600; margin: 0 0 4px; }
+  .meta { font-size: .82rem; color: var(--muted); margin: 0 0 8px; }
+  .linha { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .preco { font-weight: 700; font-size: 1.05rem; }
+  .botao {
+    background: var(--accent); color: var(--accent-text); border-radius: 10px;
+    padding: 7px 12px; font-size: .88rem; font-weight: 600; white-space: nowrap;
+  }
+  .novo {
+    position: absolute; top: 6px; left: 6px; background: var(--accent); color: var(--accent-text);
+    font-size: .7rem; font-weight: 700; padding: 2px 7px; border-radius: 999px;
+  }
+  .vazio { text-align: center; color: var(--muted); padding: 24px 0; }
+  footer { margin-top: 28px; text-align: center; font-size: .78rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img class="avatar" src="img/mimi.jpg" alt="Mimi, a gata dos achadinhos">
+    <h1 id="nome"></h1>
+    <p id="descricao"></p>
+  </header>
+
+  <input class="busca" id="busca" type="search" placeholder="Buscar produto…" aria-label="Buscar produto">
+  <div class="chips" id="chips" role="group" aria-label="Categorias"></div>
+  <div class="lista" id="lista"></div>
+
+  <footer>
+    Links de afiliado: posso receber comissão pelas compras, sem custo extra para você.<br>
+    Preços e estoque podem mudar na Shopee.
+  </footer>
+</main>
+
+<script src="produtos.js"></script>
+<script>
+  const { nome, descricao, produtos } = window.VITRINE;
+  document.title = nome;
+  document.getElementById('nome').textContent = nome;
+  document.getElementById('descricao').textContent = descricao;
+
+  const lista = document.getElementById('lista');
+  const busca = document.getElementById('busca');
+  const chips = document.getElementById('chips');
+  let categoria = 'Todos';
+
+  const categorias = ['Todos', ...new Set(produtos.map(p => p.categoria).filter(Boolean))];
+  for (const c of categorias) {
+    const b = document.createElement('button');
+    b.className = 'chip';
+    b.textContent = c;
+    b.setAttribute('aria-pressed', c === categoria);
+    b.onclick = () => {
+      categoria = c;
+      chips.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', x.textContent === c));
+      desenha();
+    };
+    chips.appendChild(b);
+  }
+  if (categorias.length <= 2) chips.hidden = true;
+
+  // ?p=<id> no link destaca um produto (ex.: "link no perfil" de um vídeo específico)
+  const alvo = new URLSearchParams(location.search).get('p');
+
+  function normaliza(s) {
+    return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  }
+
+  function desenha() {
+    const q = normaliza(busca.value.trim());
+    let itens = produtos.filter(p =>
+      (categoria === 'Todos' || p.categoria === categoria) &&
+      (!q || normaliza(p.titulo).includes(q)));
+    if (alvo) itens.sort((a, b) => (b.id === alvo) - (a.id === alvo));
+    lista.replaceChildren();
+    if (!itens.length) {
+      const v = document.createElement('p');
+      v.className = 'vazio';
+      v.textContent = 'Nenhum produto encontrado.';
+      lista.appendChild(v);
+      return;
+    }
+    for (const p of itens) {
+      const a = document.createElement('a');
+      a.className = 'produto';
+      a.href = p.link;
+      a.target = '_blank';
+      a.rel = 'noopener sponsored';
+      a.id = p.id;
+
+      const img = document.createElement('img');
+      img.src = p.imagem; img.alt = ''; img.loading = 'lazy';
+      a.appendChild(img);
+
+      if (p.novo) {
+        const n = document.createElement('span');
+        n.className = 'novo'; n.textContent = 'NOVO';
+        a.appendChild(n);
+      }
+
+      const info = document.createElement('div');
+      const h = document.createElement('h2'); h.textContent = p.titulo; info.appendChild(h);
+      if (p.destaque) {
+        const m = document.createElement('p'); m.className = 'meta'; m.textContent = p.destaque; info.appendChild(m);
+      }
+      const linha = document.createElement('div'); linha.className = 'linha';
+      const preco = document.createElement('span'); preco.className = 'preco'; preco.textContent = p.preco || '';
+      const botao = document.createElement('span'); botao.className = 'botao'; botao.textContent = 'Ver na Shopee';
+      linha.append(preco, botao);
+      info.appendChild(linha);
+      a.appendChild(info);
+      lista.appendChild(a);
+    }
+  }
+
+  busca.addEventListener('input', desenha);
+  desenha();
+</script>
+</body>
+</html>
