@@ -7,6 +7,15 @@ window.VITRINE = {
   descricao: 'Os achados que aparecem nos meus vídeos 👇',
   produtos: [
     {
+      id: 'capas-cadeira',
+      titulo: 'Kit 4 capas de cadeira natalinas, tecido elástico, várias estampas',
+      preco: '',
+      imagem: 'img/capas-cadeira.jpg',
+      link: 'https://s.shopee.com.br/9KjfvjobB9',
+      categoria: 'Natal',
+      novo: true,
+    },
+    {
       id: 'porta-natal',
       titulo: 'Capa de porta de Natal, várias estampas (Papai Noel, duendes, lareira, presente)',
       preco: '',
