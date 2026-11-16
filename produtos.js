@@ -7,6 +7,15 @@ window.VITRINE = {
   descricao: 'Os achados que aparecem nos meus vídeos 👇',
   produtos: [
     {
+      id: 'porta-natal',
+      titulo: 'Capa de porta de Natal, várias estampas (Papai Noel, duendes, lareira, presente)',
+      preco: '',
+      imagem: 'img/porta-natal.jpg',
+      link: 'https://s.shopee.com.br/30pcLb8qNn',
+      categoria: 'Natal',
+      novo: true,
+    },
+    {
       id: 'cortina-led',
       titulo: 'Cortina de LED fio de fada 300 LEDs 3x3m, 8 modos, com controle',
       preco: 'R$ 25,35',
