@@ -1,11 +1,21 @@
 // Vitrine de afiliado: edite só este arquivo para adicionar produtos.
 // Campos: id (curto, sem espaço), titulo, preco (texto), imagem (em img/),
-// link (link de afiliado Shopee), categoria, destaque (opcional), novo (true = selo "novo").
+// link (link de afiliado), loja ('shopee' padrão | 'ml'), categoria, destaque (opcional), novo (true = selo "novo").
 // O produto mais recente vai no topo da lista.
 window.VITRINE = {
   nome: 'Mimi Achadinhos',
   descricao: 'Os achados que aparecem nos meus vídeos 👇',
   produtos: [
+    {
+      id: 'cascata-400',
+      titulo: 'Cascata de Natal 400 LEDs branco frio, 10 m extensível, 8 funções, à prova d\'água',
+      preco: 'R$ 67,90',
+      imagem: 'img/cascata-400.jpg',
+      link: 'https://meli.la/25gCMzh',
+      loja: 'ml',
+      categoria: 'Natal',
+      novo: true,
+    },
     {
       id: 'arvore-210',
       titulo: 'Árvore de Natal artificial 2,10 m, galhos grandes, pé de ferro (enfeites não inclusos)',

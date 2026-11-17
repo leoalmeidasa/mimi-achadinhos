@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mimi Achadinhos</title>
-<meta name="description" content="Os produtos que aparecem nos meus vídeos, com link direto para a Shopee.">
+<meta name="description" content="Os produtos que aparecem nos meus vídeos, com link direto para a Shopee e o Mercado Livre.">
 <meta name="robots" content="noindex">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎄</text></svg>">
 <style>
@@ -18,6 +18,8 @@
     --accent-text: #fff6f0;
     --chip: #3a3244;
     --chip-on: #ee6a3c;
+    --ml: #f0d64a;          /* amarelo próximo ao do Mercado Livre, suavizado */
+    --ml-text: #2d2630;
     --radius: 16px;
   }
   @media (prefers-color-scheme: light) {
@@ -67,11 +69,12 @@
   .produto h2 { font-size: .98rem; font-weight: 600; margin: 0 0 4px; }
   .meta { font-size: .82rem; color: var(--muted); margin: 0 0 8px; }
   .linha { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  .preco { font-weight: 700; font-size: 1.05rem; }
+  .preco { font-weight: 700; font-size: 1.05rem; white-space: nowrap; }
   .botao {
     background: var(--accent); color: var(--accent-text); border-radius: 10px;
     padding: 7px 12px; font-size: .88rem; font-weight: 600; white-space: nowrap;
   }
+  .botao.ml { background: var(--ml); color: var(--ml-text); }
   .novo {
     position: absolute; top: 6px; left: 6px; background: var(--accent); color: var(--accent-text);
     font-size: .7rem; font-weight: 700; padding: 2px 7px; border-radius: 999px;
@@ -99,7 +102,7 @@
 
   <footer>
     Links de afiliado: posso receber comissão pelas compras, sem custo extra para você.<br>
-    Preços e estoque podem mudar na Shopee.
+    Preços e estoque podem mudar na loja.
   </footer>
 </main>
 
@@ -176,7 +179,10 @@
       }
       const linha = document.createElement('div'); linha.className = 'linha';
       const preco = document.createElement('span'); preco.className = 'preco'; preco.textContent = p.preco || '';
-      const botao = document.createElement('span'); botao.className = 'botao'; botao.textContent = 'Ver na Shopee';
+      const ml = p.loja === 'ml';
+      const botao = document.createElement('span');
+      botao.className = ml ? 'botao ml' : 'botao';
+      botao.textContent = ml ? 'Ver no Mercado Livre' : 'Ver na Shopee';
       linha.append(preco, botao);
       info.appendChild(linha);
       a.appendChild(info);
